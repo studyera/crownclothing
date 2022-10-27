@@ -1,4 +1,5 @@
-import { useState} from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   createUserDocumentFromAuth,
   signInWithGooglePopup,
@@ -6,29 +7,32 @@ import {
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/from-input.component";
 import "./sign-in-form.styles.scss";
-import Button,{Button_Type_Classes} from "../button/button.component";
+import Button, { Button_Type_Classes } from "../button/button.component";
+import {
+  googleSignInStart,
+  emailSignInStart,
+} from "../../store/user/user.action";
+
 const defaultFormFields = {
   email: "",
   password: "",
 };
 
 const SignInForm = () => {
+  const dispatch = useDispatch();
   const [formFields, setFormFields] = useState(defaultFormFields);
   const { email, password } = formFields;
 
-  const resetFormFields=()=>{
+  const resetFormFields = () => {
     setFormFields(defaultFormFields);
-  }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-       await signInAuthUserwithEmailAndPassword(
-        email,
-        password
-      );
+      // await signInAuthUserwithEmailAndPassword(email, password);
+      dispatch(emailSignInStart(email, password));
       resetFormFields();
-      
     } catch (error) {
       if (error.code === "auth/wrong-password") {
         alert("incorrect password");
@@ -39,7 +43,8 @@ const SignInForm = () => {
     }
   };
   const SignInWithGoogle = async () => {
-    await signInWithGooglePopup();
+    // await signInWithGooglePopup();
+    dispatch(googleSignInStart());
   };
 
   const handleChange = (event) => {
@@ -60,6 +65,7 @@ const SignInForm = () => {
           name="email"
           value={email}
         />
+
         <FormInput
           lable="Password"
           required

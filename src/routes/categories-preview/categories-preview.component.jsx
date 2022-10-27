@@ -1,3 +1,5 @@
+
+import React from "react";
 import { CategoriesContext } from "../../context/categories.context";
 import "./categories-preview.styles.scss";
 import { useContext } from "react";
@@ -10,7 +12,7 @@ const CategoriesPreview = () => {
   const categoriesMap= useSelector(selectCategoriesMap);
   const isCategoriesLoading= useSelector(selectIsCategoriesLoading);
   return (
-    <>
+    <React.Fragment>
      {
       isCategoriesLoading? <Spinner />:( Object.keys(categoriesMap).map((title) => {
         const products = categoriesMap[title];
@@ -20,7 +22,7 @@ const CategoriesPreview = () => {
       }))
      }
       
-    </>
+    </React.Fragment>
   );
 };
 
